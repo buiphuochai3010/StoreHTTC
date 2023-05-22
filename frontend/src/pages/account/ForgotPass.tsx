@@ -1,15 +1,47 @@
 import Link from 'next/link'
 import React from 'react'
-import Router from 'next/router'
-
-
-const handleSubmit = async () => {
-  
-};
-
-
+import swal from 'sweetalert'
 
 const ForgotPassword = () => {
+
+  const handleSubmit = async () => {
+    const data = {
+      email: document.querySelector('input[name="email"]') as HTMLInputElement
+    };
+    const emailInfo = {
+      email: data['email'].value
+    };
+
+    const forgotPass = await fetch(`http://localhost:1337/api/auth/forgot-password`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer 44e1c4adc864717c17b7fc4c0d884aaf8cffbc57c1b937a36d168acd9bdbe535e56d1adbd934ef9355fc6462f8309dbad3606ca31b392c5191d2bd00f78a22edb58c5d46b71849cbc50b8fa8b8bb36c330ae69afe7ca86feff04cc31057ef726d0087b4e9ff748f88cb8977de146c1349133ca86d8d7698db77da8fc9a7d8e24`
+      },
+      body: JSON.stringify(emailInfo)
+    })
+
+    const forgotPassResponse = await forgotPass.json();
+
+        if (typeof forgotPassResponse.error !== "undefined") {
+            console.log('Send mail error:', forgotPassResponse.error);
+            swal({
+                title: "Warning",
+                text: forgotPassResponse.error.message,
+                icon: "warning",
+                dangerMode: true,
+            })
+        } else {
+            swal({
+                title: "Successful Send Mail!",
+                text: "Please check your Email!",
+                icon: "success",
+                button: "OK"
+            })
+            console.log('Send mail success:', forgotPassResponse);
+        }
+  };
+
   return (
     <>
       <div className="min-w-screen min-h-screen bg-gray-900 flex items-center justify-center px-5 py-5">
@@ -20,7 +52,7 @@ const ForgotPassword = () => {
             </div>
             <div className="w-full md:w-1/2 py-10 px-5 md:px-10">
               <div className="text-center mb-10">
-                <h1 className="font-bold text-3xl text-gray-900">RESET PASSWORD</h1>
+                <h1 className="font-bold text-3xl text-gray-900">FORGOT PASSWORD</h1>
               </div>
               <div>
 
@@ -37,20 +69,8 @@ const ForgotPassword = () => {
                   </div>
                 </div>
                 <div className="flex -mx-3">
-                  <div className="w-full px-3 mb-12">
-                    <label htmlFor="" className="text-xs font-semibold px-1">New Password:</label>
-                    <div className="flex">
-                      <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-                      </svg>
-                      </div>
-                      <input type="password" name="password" className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="************" />
-                    </div>
-                  </div>
-                </div>
-                <div className="flex -mx-3">
                   <div className="w-full px-3 mb-5">
-                    <button onClick={() => handleSubmit()} className="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold">SEND</button>
+                    <button onClick={() => handleSubmit()} className="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold">SEND MAIL</button>
                   </div>
                 </div>
               </div>
@@ -58,7 +78,7 @@ const ForgotPassword = () => {
                 <div className="px-3 mb-5">
                   {
                     <Link href="./SignIn">
-                    Go back 
+                      Go back
                     </Link>
 
                   }

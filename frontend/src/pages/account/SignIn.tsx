@@ -2,11 +2,9 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import Router from 'next/router'
 import * as localStorage from 'local-storage';
-import { AlertModal } from '../components/modal/alert';
+import swal from 'sweetalert'
 
 const SignIn = () => {
-  const [modalshow, setModalshow] = useState(false)
-  const [message, setMessage] = useState(null)
 
   const handleSubmit = async () => {
 
@@ -28,22 +26,37 @@ const SignIn = () => {
       body: JSON.stringify(loginInfo)
     })
 
-    const loginResponse = await login.json();
+    const loginResponse = await login.json()
 
     if (typeof loginResponse.error !== "undefined") {
       console.log('Login error:', loginResponse.error);
-      setMessage('Bạn đã nhập sai mật khẩu')
-      setModalshow(true)
+      swal({
+        title: "Warning",
+        text: loginResponse.error.message,
+        icon: "warning",
+        dangerMode: true,
+      })
     } else {
-      console.log('Login success', loginResponse);
-      localStorage.set('Profile', loginResponse);
+      const jwt = loginResponse.jwt
+      const getProfile = await fetch(`http://localhost:1337/api/users/me?populate[Profile][fields][0]=id`, {
+        method: "GET",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ` + jwt
+        }
+      })
+
+      const jsonString = await getProfile.json()
+      const getProfileRes = { ...jsonString, ...{jwt: jwt}}
+
+      console.log('Login success', getProfileRes);
+      localStorage.set('Profile', getProfileRes);
       Router.push('http://localhost:3000');
     }
   };
 
   return (
     <>
-      <AlertModal isShow={modalshow} isShowChange={setModalshow} message={message} />
       <div className="min-w-screen min-h-screen bg-gray-900 flex items-center justify-center px-5 py-5">
         <div className="bg-gray-100 text-gray-500 rounded-3xl shadow-xl w-full overflow-hidden" style={{ maxWidth: '1000px' }}>
           <div className="md:flex w-full">

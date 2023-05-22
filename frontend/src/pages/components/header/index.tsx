@@ -12,10 +12,13 @@ export const Header = () => {
     const [email, setEmail] = useState();
     const [searchvalue, setSearchvalue] = useState('')
 
+    const router = useRouter();
+
     const login = () => setLoginstatus(true)
     const logout = () => {
         setLoginstatus(false);
         localStorage.clear()
+        router.push("/");
     }
 
     const myCheckProfile = () => {
@@ -23,8 +26,8 @@ export const Header = () => {
         else {
             useEffect(() => {
                 login()
-                setUsername(localStorage.get('Profile')['user']['username']);
-                setEmail(localStorage.get('Profile')['user']['email'])
+                setUsername(localStorage.get('Profile')['username']);
+                setEmail(localStorage.get('Profile')['email'])
             }, []);
         }
     }
@@ -33,6 +36,8 @@ export const Header = () => {
     const handleInputChange = (e) => {
         setSearchvalue(e.target.value);
     }
+
+
 
     const handleSubmit = async (e) => {
         const res = await axios.get('http://localhost:1337/api/sanphams?filters[TenSP][$contains]=' + searchvalue, {
@@ -79,7 +84,10 @@ export const Header = () => {
                         {loginstatus
                             ? <>
                                 <Dropdown label={<>
-                                    <Avatar img="/THieuSleeper.jpg" rounded bordered size="sm" />
+                                    <Avatar img={localStorage.get('Profile')
+                                        ? "/images/user-avatar/" + localStorage.get('Profile')['Hinhanh']
+                                        : "/images/user-avatar/1.jpg"
+                                    } rounded bordered size="sm" />
                                     <span className='text-black font-medium text-sm ml-2'>{username}</span>
                                 </>}
                                     pill
@@ -96,10 +104,16 @@ export const Header = () => {
                                         </span>
                                     </Dropdown.Header>
                                     <Dropdown.Item>
-                                        <Link href="/user/profileshop">Tạo Profile Shop</Link>
+                                        {localStorage.get('Profile') && localStorage.get('Profile')['Profile'] !== null && localStorage.get('Profile')['Profile']['id'] !== null
+                                            ? <Link href={"/user/updateprofile/"}>Sửa Profile Shop</Link>
+                                            : <Link href={"/user/updateprofile/"}>Tạo Profile</Link>
+                                        }
                                     </Dropdown.Item>
                                     <Dropdown.Item>
                                         <Link href="/user/productmanage">Quản lý sản phẩm</Link>
+                                    </Dropdown.Item>
+                                    <Dropdown.Item>
+                                        <Link href="/user/changepassword">Đổi mật khẩu</Link>
                                     </Dropdown.Item>
                                     <Dropdown.Divider />
                                     <Dropdown.Item onClick={() => logout()}>
@@ -127,7 +141,7 @@ export const Header = () => {
                                 <Link href="/sanpham" className="text-base text-gray-900 dark:text-white hover:underline">Sản phẩm</Link>
                             </li>
                             <li>
-                                <Link href="/categories/Category.tsx" className="text-base text-gray-900 dark:text-white hover:underline">Danh mục</Link>
+                                <Link href="/categories/" className="text-base text-gray-900 dark:text-white hover:underline">Danh mục</Link>
                             </li>
                             <li>
                                 <a href="#" className="text-base text-gray-900 dark:text-white hover:underline">Thương hiệu</a>

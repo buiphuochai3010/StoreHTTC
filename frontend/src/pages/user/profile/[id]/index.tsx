@@ -21,7 +21,7 @@ const Profile = (props: any) => {
     }
 
     async function fetchProfile() {
-        const res = await axios.get('http://localhost:1337/api/sanphams/' + router.query.id + '?fields[0]=TenSP&populate[0]=Profile', {
+        const res = await axios.get('http://localhost:1337/api/profiles/' + router.query.id, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ const Profile = (props: any) => {
                 ? <Layout title="Tạo Profile Shop" maxwidth="max-w-screen-xl">
                     <Breadcrumb className='mb-5'>
                         <Breadcrumb.Item href="/" icon={HiHome}>Home</Breadcrumb.Item>
-                        <Breadcrumb.Item >Profile {profile.attributes.Profile.data.attributes.TenGH}</Breadcrumb.Item>
+                        <Breadcrumb.Item >Profile {profile.attributes.TenGH}</Breadcrumb.Item>
                     </Breadcrumb>
 
                     <div className='block'>
@@ -68,17 +68,17 @@ const Profile = (props: any) => {
                                         <div className='flex'>
                                             <Avatar
                                                 className='mr-2 flex-shrink-0'
-                                                img={"/images/user-avatar/" + profile.attributes.Profile.data.attributes.Hinhanh}
+                                                img={"/images/user-avatar/" + profile.attributes.Hinhanh}
                                                 size="lg"
                                                 rounded={true}
                                             />
-                                            <p className='text-xl font-semibold my-auto'>{profile.attributes.Profile.data.attributes.TenGH}</p>
+                                            <p className='text-xl font-semibold my-auto'>{profile.attributes.TenGH}</p>
                                         </div>
                                     </div>
                                     {/* Ngày đăng ký */}
                                     <div className='flex my-auto mb-0'>
                                         <p className='text-gray-600 font-semibold mr-2'>Ngày đăng ký:</p>
-                                        <p className='text-black'>{moment(profile.attributes.createdAt).format("DD/MM/YYYY")}</p>
+                                        <p className='text-black'>{moment(profile.attributes.Ngaydangky).format("DD/MM/YYYY")}</p>
                                     </div>
                                 </div>
                                 <div className='w-2/3 text-black text-lg'>
@@ -88,19 +88,19 @@ const Profile = (props: any) => {
                                     </div>
                                     <div className='flex'>
                                         <p className='mr-2 font-semibold text-blue-700'>Email:</p>
-                                        <p>{profile.attributes.Profile.data.attributes.Email}</p>
+                                        <p>{profile.attributes.Email}</p>
                                     </div>
                                     <div className='bg-slate-100 flex'>
                                         <p className='mr-2 font-semibold text-blue-700'>Địa chỉ:</p>
-                                        <p>{profile.attributes.Profile.data.attributes.Diachi}</p>
+                                        <p>{profile.attributes.Diachi}</p>
                                     </div>
                                     <div className='flex'>
                                         <p className='mr-2 font-semibold text-blue-700'>Số điện thoại:</p>
-                                        <p>096 969 6969</p>
+                                        <p>{profile.attributes.Sdt}</p>
                                     </div>
                                     <div className='bg-slate-100 flex'>
                                         <p className='mr-2 font-semibold text-blue-700'>Link website:</p>
-                                        <a className='text-blue-700 hover:text-blue-800' target='_blank' href={"https://" + profile.attributes.Profile.data.attributes.Url}>{profile.attributes.Profile.data.attributes.Url}</a>
+                                        <a className='text-blue-700 hover:text-blue-800' target='_blank' href={"https://" + profile.attributes.Url}>{profile.attributes.Url}</a>
                                     </div>
                                 </div>
                             </div>
@@ -111,7 +111,7 @@ const Profile = (props: any) => {
                                 Mô tả
                             </h5>
                             <p className="font-normal text-gray-700">
-                                <ReactMarkdown children={profile.attributes.Profile.data.attributes.Mota} />
+                                <ReactMarkdown children={profile.attributes.Mota} />
                             </p>
                         </Card>
 

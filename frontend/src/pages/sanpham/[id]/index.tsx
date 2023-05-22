@@ -99,7 +99,7 @@ const ChiTietSanPham = () => {
                                 <Card className='w-full mb-5'>
                                     <div className='flex'>
                                         <div className='w-2/5 block mr-10'>
-                                            <Image alt="picture" width='300' height='300' className='rounded-lg border-2 hover:border-blue-600' src={"/images/products/" + img1} />
+                                            <Image alt="picture" width='300' height='300' className='rounded-lg border-2 hover:border-blue-600' src={"/images/products/" + currentpicture} />
                                             <div className='flex flex-wrap'>
                                                 <Image onClick={() => setCurrentpicture(img1)} alt="" width='100' height='100' className='rounded-lg border-2 hover:border-blue-600' src={"/images/products/" + img1} />
                                                 {img2 === 'active'
@@ -112,14 +112,6 @@ const ChiTietSanPham = () => {
                                         </div>
                                         <div className='w-[36rem] flex flex-col gap-4'>
                                             <div className='text-black text-2xl font-bold'>{productdetail && productdetail.attributes ? productdetail.attributes.TenSP : null}</div>
-                                            {/* Rating */}
-                                            <Rating>
-                                                <Rating.Star />
-                                                <Rating.Star />
-                                                <Rating.Star />
-                                                <Rating.Star />
-                                                <Rating.Star filled={false} />
-                                            </Rating>
                                             {/* Giá */}
                                             <NumericFormat className="w-full text-3xl font-bold text-red-700" value={productdetail.attributes.Giatien} displayType='text' thousandSeparator={true} suffix='₫' />
                                             {/* Thẻ danh mục */}
@@ -190,12 +182,9 @@ const ChiTietSanPham = () => {
                                         Thuộc tính sản phẩm
                                     </h5>
                                     <div className='flex flex-wrap'>
-                                        {productdetail.attributes.Chitiet_sanpham.data.attributes.Mausac.data
+                                        {/* {productdetail.attributes.Chitiet_sanpham.data.attributes.Mausac.data
                                             ? <div className="w-1/2 flex items-center space-x-4 mb-5">
                                                 <div className="min-w-0 flex-1">
-                                                    {/* <p className="truncate text-sm font-semibold text-gray-900">
-                                                        Màu sắc
-                                                    </p> */}
                                                     <Badge size="sm" className='w-fit'>
                                                         Màu sắc
                                                     </Badge>
@@ -215,18 +204,22 @@ const ChiTietSanPham = () => {
                                         {productdetail.attributes.Chitiet_sanpham.data.attributes.Size.data
                                             ? <div className="w-1/2 flex items-center space-x-4 mb-5">
                                                 <div className="min-w-0 flex-1">
-                                                    {/* <p className="truncate text-sm font-semibold text-gray-900">
-                                                        Kích thước
-                                                    </p> */}
                                                     <Badge size="sm" className='w-fit'>
                                                         Kích thước
                                                     </Badge>
                                                     <p className="ml-2 text-base font-medium text-gray-800">
-                                                        {productdetail.attributes.Chitiet_sanpham.data.attributes.Size.data.attributes.TenSize}
+                                                        {productdetail.attributes.Chitiet_sanpham.data.attributes.Size.data.map((item, index) => {
+                                                            const isLastIndex = index === productdetail.attributes.Chitiet_sanpham.data.attributes.Size.data.length - 1
+                                                            return (
+                                                                isLastIndex
+                                                                    ? <span>{item.attributes.TenSize}.</span>
+                                                                    : <span>{item.attributes.TenSize}, </span>
+                                                            )
+                                                        })}
                                                     </p>
                                                 </div>
                                             </div>
-                                            : null}
+                                            : null} */}
 
                                         {productdetail.attributes.Chitiet_sanpham.data.attributes.Giatri_thuoctinh.data.map((item, index) => (
                                             <>
@@ -269,7 +262,7 @@ const ChiTietSanPham = () => {
                                         </div>
                                         <div className='bg-slate-100'>
                                             <p className='font-semibold text-blue-700'>URL:</p>
-                                            <a className='text-blue-700 hover:text-blue-800' href={profile.attributes.Profile.data.attributes.Url}>{profile.attributes.Profile.data.attributes.Url}</a>
+                                            <a className='text-blue-700 hover:text-blue-800' target='_blank' href={"https://" + profile.attributes.Profile.data.attributes.Url}>{profile.attributes.Profile.data.attributes.Url}</a>
                                         </div>
                                     </Card>
                                 </div>

@@ -17,7 +17,7 @@ const SanPham = () => {
     }
 
     async function fetchProduct() {
-        const res = await axios.get('http://localhost:1337/api/sanphams?filters[Profile][id][$eq]=2&pagination[page]=' + currentpage + '&pagination[pageSize]=5&fields[0]=TenSP&fields[1]=Hinhanh&fields[2]=Giatien&populate[Chitiet_sanpham][populate][Danhmuc][fields][0]=TenDM', {
+        const res = await axios.get('http://localhost:1337/api/sanphams?pagination[page]=' + currentpage + '&pagination[pageSize]=8&fields[0]=TenSP&fields[1]=Hinhanh&fields[2]=Giatien&populate[Chitiet_sanpham][populate][Danhmuc][fields][0]=TenDM', {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
